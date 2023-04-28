@@ -73,8 +73,9 @@ const rest = new REST({ version: '9' }).setToken(process.env.CLIENT_TOKEN);
 //dev-Only messageCommands
 client.on(Events.MessageCreate, (message) => {
     const prefix = process.env.CLIENT_PREFIX
+    const dev = process.env.CLIENT_OWNER
     if (message.content == `${prefix}ping`) {
-        if (message.author.id !== "1024660655011274792") return;
+        if (message.author.id !== dev) return;
         var latency = client.ws.ping;
         let color = 'White';
         if (latency <= 100)
@@ -92,7 +93,7 @@ client.on(Events.MessageCreate, (message) => {
             message.reply({ embeds: [embed] })
         } else return
     } else if (message.content == `${prefix}eval`) {
-        if(message.author.id !== "1024660655011274792") return
+        if(message.author.id !== dev) return
         const args = message.content.slice(prefix.length).trim().split(/ +/);
         try{
             eval(args.join(' '))
