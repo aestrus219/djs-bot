@@ -33,7 +33,7 @@ async function _getGoogleSheetClient() {
     });
 }
 
-async function _readGoogleSheet(googleSheetClient, sheetId, tabName, range) {
+async function _readGoogleSheet(googleSheetClient, sheetId, range) {
     const res = await googleSheetClient.spreadsheets.values.get({
         spreadsheetId: sheetId,
         range: range,
@@ -42,7 +42,7 @@ async function _readGoogleSheet(googleSheetClient, sheetId, tabName, range) {
     return res.data.values;
 }
 
-async function _writeGoogleSheet(googleSheetClient, sheetId, tabName, range, data) {
+async function _writeGoogleSheet(googleSheetClient, sheetId, range, data) {
     await googleSheetClient.spreadsheets.values.append({
         spreadsheetId: sheetId,
         range: range,
