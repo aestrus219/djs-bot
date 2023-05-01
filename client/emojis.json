@@ -1,9 +1,10 @@
 {
-    "at": "<:verfont_at_sign:1102278757751996518>",
-    "channel": "<:verfont_channel:1102278764148293723>",
-    "disable": "<:verfont_disable:1102278782984917233>",
-    "happy": "<:verfont_happy:1102278768539738132>",
-    "message": "<:verfont_message:1102278761904357416>",
-    "reset": "<:verfont_reset:1102278774600499260>",
-    "settings": "<:verfont_settings:1102278778702549133>"
+    "at": "<:verfont_at:1102527529715240990>",
+    "channel": "<:verfont_channel:1102528231342608525>",
+    "close": "<:verfont_close:1102527534794543204>",
+    "happy": "<:verfont_happy:1102521605726404639>",
+    "message": "<:verfont_message:1102527539420868639>",
+    "restart": "<:verfont_reset:1102527548539285594>",
+    "settings": "<:verfont_settings:1102527543803904122>",
+    "wave": "<:verfont_wave:1102528198132125726>"
 }
