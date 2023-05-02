@@ -46,37 +46,37 @@ async function searchIdAndKey(spreadsheetId, id, key) {
 
 
 async function writeValues(spreadsheetId, range, values) {
-    const auth = await google.auth.getClient({
-        keyFile: "./client/database/credentials.json",
-      scopes: ['https://www.googleapis.com/auth/spreadsheets']
-    });
-  
-    const resource = {
-      values: [values],
-    };
-  
-    await sheets.spreadsheets.values.append({
-      auth,
-      spreadsheetId,
-      range,
-      valueInputOption: 'USER_ENTERED',
-      resource,
-    });
-  }
-  
-  async function setValues(spreadsheetId, data) {
-    const range = 'A:Z';
-    const values = data;
-  
-    await writeValues(spreadsheetId, range, values);
-  }
+  const auth = await google.auth.getClient({
+    keyFile: "./client/database/credentials.json",
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  });
+
+  const resource = {
+    values: [values],
+  };
+
+  await sheets.spreadsheets.values.append({
+    auth,
+    spreadsheetId,
+    range,
+    valueInputOption: 'USER_ENTERED',
+    resource,
+  });
+}
+
+async function setValues(spreadsheetId, data) {
+  const range = 'A:Z';
+  const values = data;
+
+  await writeValues(spreadsheetId, range, values);
+}
 
 
 async function updateValue(spreadsheetId, guildID, key, newValue) {
   const auth = await google.auth.getClient({
     keyFile: "./client/database/credentials.json",
-  scopes: ['https://www.googleapis.com/auth/spreadsheets']
-});
+    scopes: ['https://www.googleapis.com/auth/spreadsheets']
+  });
   try {
     const findRowRequest = {
       spreadsheetId,
@@ -116,16 +116,16 @@ async function updateValue(spreadsheetId, guildID, key, newValue) {
 }
 
 
-class vDB{
-    read(guildID, key){
-        return searchIdAndKey(process.env.GDRIVE_DB_ID, guildID, key)
-    }
-    write(data){
-        return setValues(process.env.GDRIVE_DB_ID, data)
-    }
-    update(guildID, key, newValue){
-      return updateValue(process.env.GDRIVE_DB_ID, guildID,key, newValue);
-    }
+class vDB {
+  read(guildID, key) {
+    return searchIdAndKey(process.env.GDRIVE_DB_ID, guildID, key)
+  }
+  write(data) {
+    return setValues(process.env.GDRIVE_DB_ID, data)
+  }
+  update(guildID, key, newValue) {
+    return updateValue(process.env.GDRIVE_DB_ID, guildID, key, newValue);
+  }
 }
 
 module.exports = vDB;
