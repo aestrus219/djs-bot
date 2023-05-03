@@ -7,7 +7,7 @@ module.exports = {
         .setDescription('Manage the welcome module for this server'),
     async execute(interaction) {
         const embed = new EmbedBuilder()
-            .setTitle(`${emojis.happy} Welcome Module`)
+            .setTitle(`${emojis.wave} Welcome Module`)
             .setColor('Random')
             .addFields(
                 {
@@ -32,13 +32,13 @@ module.exports = {
             .setCustomId('disable')
             .setLabel('Disable Module')
             .setStyle(ButtonStyle.Danger)
-            .setEmoji(emojis.disable)
+            .setEmoji(emojis.close)
 
         const reset = new ButtonBuilder()
             .setCustomId('reset')
             .setLabel('Reset settings to default')
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji(emojis.reset)
+            .setEmoji(emojis.restart)
 
         const row = new ActionRowBuilder()
             .addComponents(settings, disable, reset);
