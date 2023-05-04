@@ -22,6 +22,20 @@ for (const file of eventFiles) {
     }
 }
 
+//Interactions Handler
+const interactionsPath = join(__dirname, 'client/interactions');
+const interactionsFiles = readdirSync(interactionsPath).filter(file => file.endsWith('.js'));
+
+for (const file of interactionsFiles) {
+    const interactionsFilePath = join(interactionsPath, file);
+    const interaction = require(interactionsFilePath);
+    if (interaction.once) {
+        client.once(interaction.name, (...args) => interaction.execute(...args));
+    } else {
+        client.on(interaction.name, (...args) => interaction.execute(...args));
+    }
+}
+
 //Commands Handler
 client.commands = new Collection();
 const commandFiles = readdirSync('./client/commands').filter(file => file.endsWith('.js'));
