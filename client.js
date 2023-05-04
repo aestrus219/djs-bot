@@ -37,6 +37,20 @@ for (const file of interactionsFiles) {
     }
 }
 
+//Listeners Handler
+const listenersPath = join(__dirname, 'client/listeners');
+const listenersFiles = readdirSync(listenersPath).filter(file => file.endsWith('.js'));
+
+for (const file of listenersFiles) {
+    const listenersFilePath = join(listenersPath, file);
+    const listener = require(listenersFilePath);
+    if (listener.once) {
+        client.once(listener.name, (...args) => listener.execute(...args));
+    } else {
+        client.on(listener.name, (...args) => listener.execute(...args));
+    }
+}
+
 //Commands Handler
 client.commands = new Collection();
 const commandFiles = readdirSync('./client/commands').filter(file => file.endsWith('.js'));
