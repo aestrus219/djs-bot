@@ -1,5 +1,5 @@
 const { Events } = require("discord.js");
-const vDB = require("../database/vDB");
+const vDB = require("../../database/vDB");
 const db = new vDB();
 
 module.exports = {

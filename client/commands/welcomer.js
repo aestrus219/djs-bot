@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const emojis = require("../emojis.json");
-const vDB = require("../database/vDB");
+const vDB = require('../../database/vDB');
 
 const db = new vDB();
 

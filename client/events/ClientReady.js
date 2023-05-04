@@ -1,5 +1,6 @@
 const { Events, ActivityType } = require("discord.js");
 const chalk = require("chalk");
+
 module.exports = {
     name: Events.ClientReady,
     once: true,
