@@ -11,11 +11,11 @@ require("dotenv").config();
 
 const { google } = require('googleapis');
 const sheets = google.sheets({ version: 'v4' });
-
+const creds = "./database/credentials.json";
 
 async function getValue(spreadsheetId, range) {
   const auth = await google.auth.getClient({
-    keyFile: "./client/database/credentials.json",
+    keyFile: creds,
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly']
   });
 
@@ -47,7 +47,7 @@ async function searchIdAndKey(spreadsheetId, id, key) {
 
 async function writeValues(spreadsheetId, range, values) {
   const auth = await google.auth.getClient({
-    keyFile: "./client/database/credentials.json",
+    keyFile: creds,
     scopes: ['https://www.googleapis.com/auth/spreadsheets']
   });
 
@@ -74,13 +74,13 @@ async function setValues(spreadsheetId, data) {
 
 async function updateValue(spreadsheetId, guildID, key, newValue) {
   const auth = await google.auth.getClient({
-    keyFile: "./client/database/credentials.json",
+    keyFile: creds,
     scopes: ['https://www.googleapis.com/auth/spreadsheets']
   });
   try {
     const findRowRequest = {
       spreadsheetId,
-      range: `Sheet1!A:E`,
+      range: `Sheet1!A:Z`,
       auth,
     };
     const findRowResponse = await sheets.spreadsheets.values.get(findRowRequest);
