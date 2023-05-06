@@ -1,7 +1,7 @@
 const { Events, EmbedBuilder } = require("discord.js");
 const emojis = require("../emojis.json")
 const vDB = require('../../database/vDB');
-const db = new vDB();
+const db = new vDB({ instance: "Guild" });
 
 module.exports = {
     name: Events.InteractionCreate,

@@ -1,10 +1,10 @@
 /**
- * const vDB = require("./client/database/vDB");
- * const db = new vDB();
+ * const vDB = require("./database/vDB");
+ * const db = new vDB({ instance: "type of instance" });
  * 
- * db.write(['guildID', 'values', 'in array'])
- * db.read(guildID, key)
- * db.update(guildID, key, newValue)
+ * db.write(['ID', 'values', 'in array'])
+ * db.read(ID, key)
+ * db.update(ID, key, newValue)
  */
 
 require("dotenv").config();
@@ -28,10 +28,10 @@ async function getValue(spreadsheetId, range) {
   return response.data.values;
 }
 
-async function searchIdAndKey(spreadsheetId, id, key) {
-  const values = await getValue(spreadsheetId, 'A:Z');
+async function searchIdAndKey(spreadsheetId, id, key, instance) {
+  const values = await getValue(spreadsheetId, `${instance}!A:Z`);
   const headers = values[0];
-  const idIndex = headers.indexOf('guild_id');
+  const idIndex = headers.indexOf('id');
   const keyIndex = headers.indexOf(key);
 
   for (let i = 1; i < values.length; i++) {
@@ -64,15 +64,15 @@ async function writeValues(spreadsheetId, range, values) {
   });
 }
 
-async function setValues(spreadsheetId, data) {
-  const range = 'A:Z';
+async function setValues(spreadsheetId, data, instance) {
+  const range = `${instance}!A:Z`;
   const values = data;
 
   await writeValues(spreadsheetId, range, values);
 }
 
 
-async function updateValue(spreadsheetId, guildID, key, newValue) {
+async function updateValue(spreadsheetId, ID, key, newValue, instance) {
   const auth = await google.auth.getClient({
     keyFile: creds,
     scopes: ['https://www.googleapis.com/auth/spreadsheets']
@@ -80,15 +80,15 @@ async function updateValue(spreadsheetId, guildID, key, newValue) {
   try {
     const findRowRequest = {
       spreadsheetId,
-      range: `Sheet1!A:Z`,
+      range: `${instance}!A:Z`,
       auth,
     };
     const findRowResponse = await sheets.spreadsheets.values.get(findRowRequest);
     const rows = findRowResponse.data.values;
-    const rowIndex = rows.findIndex(row => row[0] === guildID);
+    const rowIndex = rows.findIndex(row => row[0] === ID);
 
     if (rowIndex === -1) {
-      return `No entry found by the ID ${guildID}`;
+      return `No entry found by the ID ${ID}`;
     }
 
     const keyIndex = rows[0].indexOf(key)
@@ -96,7 +96,7 @@ async function updateValue(spreadsheetId, guildID, key, newValue) {
       return `No column found by the name ${keyIndex}`;
     }
     const column = String.fromCharCode(keyIndex + 65);
-    const range = `Sheet1!${column}${rowIndex + 1}`;
+    const range = `${instance}!${column}${rowIndex + 1}`;
 
     const updateRequest = {
       auth,
@@ -109,7 +109,7 @@ async function updateValue(spreadsheetId, guildID, key, newValue) {
       },
     };
     await sheets.spreadsheets.values.update(updateRequest)
-    console.log(`Updated value of ${key} to ${newValue} for guild ID ${guildID}.`)
+    console.log(`Updated value of ${key} to ${newValue} for guild ID ${ID}.`)
   } catch (e) {
     console.log(e.message)
   }
@@ -117,14 +117,18 @@ async function updateValue(spreadsheetId, guildID, key, newValue) {
 
 
 class vDB {
-  read(guildID, key) {
-    return searchIdAndKey(process.env.GDRIVE_DB_ID, guildID, key)
+  constructor(options) {
+    this.instance = options.instance;
+    if(!this.instance) return console.log("vDB Error: No instance specified in options")
+  }
+  read(ID, key) {
+    return searchIdAndKey(process.env.GDRIVE_DB_ID, ID, key, this.instance)
   }
   write(data) {
-    return setValues(process.env.GDRIVE_DB_ID, data)
+    return setValues(process.env.GDRIVE_DB_ID, data, this.instance)
   }
-  update(guildID, key, newValue) {
-    return updateValue(process.env.GDRIVE_DB_ID, guildID, key, newValue);
+  update(ID, key, newValue) {
+    return updateValue(process.env.GDRIVE_DB_ID, ID, key, newValue, this.instance);
   }
 }
 
