@@ -119,7 +119,7 @@ async function updateValue(spreadsheetId, ID, key, newValue, instance) {
 class vDB {
   constructor(options) {
     this.instance = options.instance;
-    if(!this.instance) return console.log("vDB Error: No instance specified in options")
+    if(!this.instance) console.log("vDB Error: No instance specified in options")
   }
   read(ID, key) {
     return searchIdAndKey(process.env.GDRIVE_DB_ID, ID, key, this.instance)
